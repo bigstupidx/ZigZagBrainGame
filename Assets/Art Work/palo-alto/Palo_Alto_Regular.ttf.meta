@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 56863e8bf54facf4186021534a4b69e3
+timeCreated: 1509623964
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - PaloAlto
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 10e53dcad4b921b43b14b803c0f0f2f2, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
