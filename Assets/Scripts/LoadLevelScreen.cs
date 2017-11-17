@@ -9,7 +9,6 @@ public class LoadLevelScreen : MonoBehaviour {
     public GameObject LoadingScreen;
     public Slider slider;
     public Text text; 
-    // Use this for initialization
     public void LoadLevel(int LevelIndex)
     {
         LoadingScreen.SetActive(true);
@@ -18,7 +17,7 @@ public class LoadLevelScreen : MonoBehaviour {
        
     IEnumerator LoadingAsynchronously (int LevelIndex)
     {
-        
+
         AsyncOperation Operation = SceneManager.LoadSceneAsync(LevelIndex);
        
         while (!Operation.isDone)

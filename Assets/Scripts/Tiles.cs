@@ -13,7 +13,7 @@ public class Tiles : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             TileManager.Instance.SpawnTile();
-           // StartCoroutine(FallDown());
+          	 StartCoroutine(FallDown());
           
         }
     }
@@ -21,7 +21,7 @@ public class Tiles : MonoBehaviour {
     IEnumerator FallDown()
     {
         yield return new WaitForSeconds(1.5f);
- //       this.gameObject.GetComponent<Collider>().enabled = false;
+     //   this.gameObject.GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = false;
         yield return new WaitForSeconds(3f);
 		Destroy (this.gameObject);

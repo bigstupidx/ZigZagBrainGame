@@ -16,13 +16,15 @@ public class GameController : MonoBehaviour {
     public int Sold;
     public static bool shop;
     public GameObject[] ShowingHiding;
-
+	public GameObject Selected;
     public static bool isKinematic = false; 
+
+	public static bool RayStart;
   
 
     void Start ()
     {
-
+		shop = false;
         //PlayerPrefs.SetInt("0", 1);
 		Player.isDead = false;
         DialogBox [0].gameObject.SetActive (true);
@@ -30,10 +32,7 @@ public class GameController : MonoBehaviour {
         PlayerSlector = PlayerPrefs.GetInt("Player");
         Players[PlayerSlector].gameObject.SetActive(true);
         ShowBuyButton();
-        shop = false;
-        //  ShowingHiding[0].SetActive(false);
-        //  ShowingHiding[1].SetActive(false);
-        Debug.Log(isKinematic);
+		FindObjectOfType<Player> ().RayCastStatus (false);
     }
 
     void Update ()
@@ -49,14 +48,14 @@ public class GameController : MonoBehaviour {
 			Debug.Log (Player.isDead);
             StartCoroutine(GameOverDelay());			
 		}
-        ///// 
+
 
 	}
 
 
 	public void OnRetry()
 	{
-		Application.LoadLevel(0);
+	//	Application.LoadLevel(0);
 	}
 
     public void OnPlay()
@@ -66,8 +65,16 @@ public class GameController : MonoBehaviour {
 		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("Run");
         ShowingHiding[0].SetActive(true);
         ShowingHiding[1].SetActive(true);
+
+		FindObjectOfType<Player> ().RayCastStatus (true);
+
+
     }
 
+	void DeadSolution()
+	{
+		RayStart = true;
+	}
     public void OnPlaySlection()
     {
         DialogBox[0].gameObject.SetActive(false);
@@ -77,10 +84,7 @@ public class GameController : MonoBehaviour {
         ShowingHiding[2].SetActive(false);
         ShowingHiding[3].SetActive(true);
         ShowingHiding[4].SetActive(true);
-
-
         isKinematic = true;
-        Debug.Log(isKinematic);
     }
 
     /// <summary>
@@ -98,26 +102,6 @@ public class GameController : MonoBehaviour {
             ShowBuyButton();
 
         }
-
-        /*
-        if (PlayerSlector == 0)
-        {
-
-            Players[0].gameObject.SetActive(false);
-            Players[1].gameObject.SetActive(true);
-            PlayerSlector = 1;
-            ShowBuyButton();
-
-        }
-        else if (PlayerSlector == 1)
-        {
-            Players[1].gameObject.SetActive(false);
-            Players[2].gameObject.SetActive(true);
-            PlayerSlector = 2;
-            ShowBuyButton();
-        }
-      
-        */
     }
 
     public void PlayerSlection_Backbtn()
@@ -136,35 +120,12 @@ public class GameController : MonoBehaviour {
             PriceText.gameObject.SetActive(false);
 
         }
-
-
-
-        /*
-        if (PlayerSlector == 1)
-        {
-
-            Players[1].gameObject.SetActive(false);
-            Players[0].gameObject.SetActive(true);
-            PlayerSlector = 0;
-            ShowBuyButton();
-        }
-        else if (PlayerSlector == 2)
-        {
-            Players[2].gameObject.SetActive(false);
-            Players[1].gameObject.SetActive(true);
-            PlayerSlector = 1;
-            ShowBuyButton();
-        }
-        */
     }
 
     public void PlayerSlection_Usebtn()
     {
         PlayerPrefs.SetInt("Player", PlayerSlector);
     }
-
-
-
 
     public void PlayerSlection_BacktoMainMenubtn()
     {
@@ -213,24 +174,14 @@ public class GameController : MonoBehaviour {
             Lock.gameObject.SetActive(true);
             PriceText.gameObject.SetActive(true);
             PriceText.text = PlayerPrice[PlayerSlector - 1].ToString();
-
-            /*
-            if (PlayerSlector == 1)
-                PriceText.text = PlayerPrice[PlayerSlector-1].ToString();
-            else 
-            if(PlayerSlector == 2)
-                PriceText.text = PlayerPrice[PlayerSlector-1].ToString();
-            else
-            if (PlayerSlector == 3)
-                PriceText.text = PlayerPrice[PlayerSlector - 1].ToString();
-            */
         }
-    } 
+
+	} 
    
-    /// ///////////////////////////////////////////////////////////////////////////////////////
+  									 ///////////////////////////////////////////////////////////////////////////////////////
     IEnumerator GameOverDelay()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
         DialogBox[1].gameObject.SetActive(false);
         DialogBox[2].gameObject.SetActive(true);
 

@@ -13,17 +13,20 @@ public class RayCast : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Ray ray = new Ray(transform.position, Vector3.down);
+        
+	
+		if (GameController.GameOnOff) {
 
-		Debug.DrawRay (transform.position, transform.TransformDirection (Vector3.down) * 10, Color.red);
-		if (Physics.Raycast(transform.position , transform.TransformDirection (Vector3.down) *10, out hit))
-        {
-			if (hit.collider.CompareTag("GameOver") && GameController.GameOnOff)
-            {
-				
-                Player.isDead = true;
-				GameController.GameOnOff = false;
-            }
-	    }
-    }
+			Ray ray = new Ray (transform.position, Vector3.down);
+			Debug.DrawRay (transform.position, -transform.up * 10f, Color.red);
+			if (Physics.Raycast (transform.position, -transform.up * 10f, out hit)) {
+				if (!hit.collider.CompareTag ("Tile")) {
+					//Debug.LogError ("Ray");
+					Player.isDead = true;
+					GameController.GameOnOff = false;
+					this.enabled = false;
+				}
+			}
+		}
+	}
 }
