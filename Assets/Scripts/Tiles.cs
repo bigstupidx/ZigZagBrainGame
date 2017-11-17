@@ -13,7 +13,7 @@ public class Tiles : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             TileManager.Instance.SpawnTile();
-            StartCoroutine(FallDown());
+           // StartCoroutine(FallDown());
           
         }
     }

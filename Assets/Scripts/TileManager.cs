@@ -53,5 +53,15 @@ public class TileManager : MonoBehaviour
         {
             CurrentTile.transform.GetChild(2).gameObject.SetActive(true);
         }
+
+
+		int FireFlies = Random.Range(0, 3);
+		if (FireFlies == 1)
+		{
+			
+			CurrentTile.transform.GetChild(3).gameObject.SetActive(true);
+
+		}
+
     }
 }

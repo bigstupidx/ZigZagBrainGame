@@ -19,12 +19,12 @@ public class GameController : MonoBehaviour {
 
     public static bool isKinematic = false; 
   
-   
+
     void Start ()
     {
 
         //PlayerPrefs.SetInt("0", 1);
-        
+		Player.isDead = false;
         DialogBox [0].gameObject.SetActive (true);
         GameOnOff = false;
         PlayerSlector = PlayerPrefs.GetInt("Player");
@@ -44,8 +44,9 @@ public class GameController : MonoBehaviour {
 			DialogBox [0].gameObject.SetActive (false);
 			DialogBox [1].gameObject.SetActive (true);
 		}
-		else if (Player.isDead) 
+		else if (Player.isDead && !GameOnOff) 
 		{
+			Debug.Log (Player.isDead);
             StartCoroutine(GameOverDelay());			
 		}
         ///// 
@@ -62,6 +63,7 @@ public class GameController : MonoBehaviour {
     {
         GameOnOff = true;
         Player.vec3 = Vector3.forward;
+		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("Run");
         ShowingHiding[0].SetActive(true);
         ShowingHiding[1].SetActive(true);
     }
@@ -69,12 +71,13 @@ public class GameController : MonoBehaviour {
     public void OnPlaySlection()
     {
         DialogBox[0].gameObject.SetActive(false);
+		ShowingHiding[5].SetActive(false);
         DialogBox[3].gameObject.SetActive(true);
         shop = true;
         ShowingHiding[2].SetActive(false);
         ShowingHiding[3].SetActive(true);
         ShowingHiding[4].SetActive(true);
-      
+
 
         isKinematic = true;
         Debug.Log(isKinematic);
@@ -167,6 +170,7 @@ public class GameController : MonoBehaviour {
     {
         DialogBox[3].gameObject.SetActive(false);
         DialogBox[0].gameObject.SetActive(true);
+		ShowingHiding[5].SetActive(true);
         isKinematic = false;
         Application.LoadLevel(0);
         shop = false;

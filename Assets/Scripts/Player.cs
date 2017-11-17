@@ -17,12 +17,17 @@ public class Player : MonoBehaviour {
     public Text uiTextCoins;
     public GameObject RagDoll;
     private Vector3 RayDirection;
+	public GameObject rayObject;
     RaycastHit hit;
    
+	void Awake()
+	{
+		isDead = false;
+	}
     void Start () {
 		Score = 0;
 		vec3 = Vector3.zero;
-        isDead = false;
+       
         coinScore = PlayerPrefs.GetInt("CoinInt");
         UiCoins.text = coinScore.ToString();
         checkRotation = true;
@@ -39,27 +44,29 @@ public class Player : MonoBehaviour {
 	void Update () {
        
         UiCoins.text = coinScore.ToString();
-        Ray ray = new Ray(transform.position, Vector3.down);
-        if (Physics.Raycast (ray, out hit , 0.5f))
+        /*Ray ray = new Ray(transform.position, -transform.up*10 );
+        if (Physics.Raycast (ray, out hit , 0.1f))
         {
-            if (hit.collider.CompareTag("Tile"))
+            if (hit.collider.CompareTag("GameOver"))
             {
-                isDead = false;
+               isDead = true;
             }
             
         }
-
+        */
 
         if (!isDead && GameController.GameOnOff && Input.GetMouseButtonDown(0))
         {
             if (checkRotation)
             {
-                transform.Rotate(0, -90, 0);
+				iTween.RotateAdd (this.gameObject, new Vector3 (0, -90, 0), 0.2f);
+              //  transform.Rotate(0, -90, 0);
                 checkRotation = false;
             }
             else
             {
-                transform.Rotate(0, 90, 0);
+				iTween.RotateAdd (this.gameObject, new Vector3 (0, 90, 0), 0.2f);
+               // transform.Rotate(0, 90, 0);
                 checkRotation = true;
             }
 
@@ -69,8 +76,11 @@ public class Player : MonoBehaviour {
         }
         else if (isDead)
         {
-            Debug.Log("isDead");
-            vec3 = Vector3.down;
+			this.gameObject.SetActive(false);
+			GameObject ragdoll=	Instantiate(RagDoll, this.gameObject.transform.GetChild(0).position, this.transform.rotation) as GameObject;
+			ragdoll.transform.GetComponentInChildren<Rigidbody> ().AddForce (transform.forward * 100f, ForceMode.Impulse);
+          //  Debug.Log("isDead");
+			vec3 = Vector3.zero;
             UiGameOverScore.text = UiScore.text;
             int BestScore = PlayerPrefs.GetInt("Best");
 
@@ -148,6 +158,9 @@ public class Player : MonoBehaviour {
 
 
 
+
+
+    /*
     void OnCollisionEnter (Collision DeadSea)
     {
 
@@ -162,7 +175,7 @@ public class Player : MonoBehaviour {
         }
 
     }
-
+    */
     void SetTextOff()
     {
         uiTextCoins.gameObject.SetActive(false);
