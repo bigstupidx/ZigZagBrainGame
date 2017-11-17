@@ -52,6 +52,10 @@ public class GameController : MonoBehaviour {
 
 	}
 
+	public void Exit()
+	{
+		Application.Quit ();
+	}
 
 	public void OnRetry()
 	{
