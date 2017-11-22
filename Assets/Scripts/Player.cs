@@ -13,11 +13,15 @@ public class Player : MonoBehaviour {
     public Text UiBestScore;
 	public Text UiGameOverScore;
     public static int coinScore;
-    private bool checkRotation;
+	public Text UiGameOverCoins;
+	private int CurrentCoins;
+	public Text UiMarketCoin;
+	private bool checkRotation;
     public Text uiTextCoins;
     public GameObject RagDoll;
     private Vector3 RayDirection;
 	public GameObject rayObject;
+
   
 
 	private bool RayStart;
@@ -27,14 +31,15 @@ public class Player : MonoBehaviour {
 		isDead = false;
 	}
     void Start () {
+		//PlayerPrefs.SetInt("Best", 0);
 		Score = 0;
 		vec3 = Vector3.zero;
         coinScore = PlayerPrefs.GetInt("CoinInt");
         UiCoins.text = coinScore.ToString();
         checkRotation = true;
         RayDirection = Vector3.down;
-
-       
+		CurrentCoins = 0;
+       	
     
        // uiTextCoins = GameObject.FindGameObjectWithTag("CoinsText");
         
@@ -50,9 +55,10 @@ public class Player : MonoBehaviour {
 	void Update () {
        
         UiCoins.text = coinScore.ToString();
-       
+		UiGameOverCoins.text = CurrentCoins.ToString();
+		UiMarketCoin.text = coinScore.ToString ();
 
-        if (!isDead && GameController.GameOnOff && Input.GetMouseButtonDown(0))
+		if (!isDead && GameController.GameOnOff && Input.GetMouseButtonDown(0) && GameController.RotationControll) 
         {
             if (checkRotation)
             {
@@ -81,7 +87,9 @@ public class Player : MonoBehaviour {
             if (Score > BestScore)
             {
                 PlayerPrefs.SetInt("Best", Score);
+				UiBestScore.text = Score.ToString ();
             }
+			else
             UiBestScore.text = BestScore.ToString();
 
         }
@@ -96,11 +104,13 @@ public class Player : MonoBehaviour {
         {
 
             coinScore = PlayerPrefs.GetInt("CoinInt");
-            coinScore = coinScore + 3;
+            coinScore = coinScore + 1;
+			CurrentCoins = CurrentCoins + 1;
+			UiGameOverCoins.text = CurrentCoins.ToString ();
             UiCoins.text = coinScore.ToString();
             Destroy(Coin.gameObject);
             PlayerPrefs.SetInt("CoinInt", coinScore);
-            uiTextCoins.text = "+3";
+            uiTextCoins.text = "+1";
             uiTextCoins.gameObject.SetActive(true);
             Invoke("SetTextOff", 0.13f);
 
@@ -112,12 +122,14 @@ public class Player : MonoBehaviour {
         {
             Debug.Log("Diamond Trigger");
             coinScore = PlayerPrefs.GetInt("CoinInt");
-            coinScore = coinScore + 5;
+            coinScore = coinScore + 3;
+			CurrentCoins = CurrentCoins + 3;
+			UiGameOverCoins.text = CurrentCoins.ToString ();
             UiCoins.text = coinScore.ToString();
             Destroy(Coin.gameObject);
             PlayerPrefs.SetInt("CoinInt", coinScore);
            
-            uiTextCoins.text = "+5";
+            uiTextCoins.text = "+3";
             uiTextCoins.gameObject.SetActive(true);
             Invoke("SetTextOff", 0.25f);
         }

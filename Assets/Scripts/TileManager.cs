@@ -97,12 +97,12 @@ public class TileManager : MonoBehaviour
 		}
 
 		int GemsSlection = Random.Range(0, 10);
-        if (GemsSlection == 1)
+		if (GemsSlection == 1 || GemsSlection == 3 ||GemsSlection == 5)
         {
             CurrentTile.transform.GetChild(1).gameObject.SetActive(true);
            
         }
-        else if (GemsSlection == 2)
+        else if (GemsSlection == 2 )
         {
             CurrentTile.transform.GetChild(2).gameObject.SetActive(true);
         }

@@ -14,13 +14,12 @@ public class Tiles : MonoBehaviour {
         {
             TileManager.Instance.SpawnTile();
           	 StartCoroutine(FallDown());
-          
         }
     }
 
     IEnumerator FallDown()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
      //   this.gameObject.GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = false;
         yield return new WaitForSeconds(3f);

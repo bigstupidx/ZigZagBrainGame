@@ -17,6 +17,7 @@ public class LoadLevelScreen : MonoBehaviour {
        
     IEnumerator LoadingAsynchronously (int LevelIndex)
     {
+		yield return new WaitForSeconds (2f);
 
         AsyncOperation Operation = SceneManager.LoadSceneAsync(LevelIndex);
        

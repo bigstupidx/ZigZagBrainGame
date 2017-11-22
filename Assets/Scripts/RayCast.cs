@@ -21,7 +21,6 @@ public class RayCast : MonoBehaviour {
 			Debug.DrawRay (transform.position, -transform.up * 10f, Color.red);
 			if (Physics.Raycast (transform.position, -transform.up * 10f, out hit)) {
 				if (!hit.collider.CompareTag ("Tile")) {
-					//Debug.LogError ("Ray");
 					Player.isDead = true;
 					GameController.GameOnOff = false;
 					this.enabled = false;
