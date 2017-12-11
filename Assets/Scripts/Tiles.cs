@@ -9,14 +9,15 @@ public class Tiles : MonoBehaviour {
     {
     }
     void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            TileManager.Instance.SpawnTile();
-          	 StartCoroutine(FallDown());
-        }
-    }
+	{
+		
+			Debug.Log (GameController.RotationControll.ToString());
+			if (other.gameObject.tag == "Player") {
+				TileManager.Instance.SpawnTile ();
+				StartCoroutine (FallDown ());
+			}
 
+	}
     IEnumerator FallDown()
     {
         yield return new WaitForSeconds(0.5f);

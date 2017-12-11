@@ -23,6 +23,7 @@ public class RayCast : MonoBehaviour {
 				if (!hit.collider.CompareTag ("Tile")) {
 					Player.isDead = true;
 					GameController.GameOnOff = false;
+
 					this.enabled = false;
 				}
 			}

@@ -49,14 +49,14 @@ public class TileManager : MonoBehaviour
     {
 		if (GapShifter) 
 		{
-			if (Player.Score <= 10 && Player.Score >= 0) {
+			if (Player.Score <= 50 && Player.Score >= 0) {
 				Step = Random.Range (3, 7);
 				GapShifter = false;
 
-			} else if (Player.Score <= 20 && Player.Score > 10) {
+			} else if (Player.Score <= 100 && Player.Score > 50) {
 				Step = Random.Range (2, 5);
 				GapShifter = false;
-			} else if (Player.Score <= 30 && Player.Score > 20) {
+			} else if (Player.Score > 100) {
 				Step = Random.Range (1, 3);
 				GapShifter = false;
 
@@ -65,25 +65,26 @@ public class TileManager : MonoBehaviour
 		}
 
 		if (Player.Score <= 30) {
-			if (CheckLeftOrTop == 0) {
+			if (CheckLeftOrTop == 0)
+			{
 				CurrentTile = (GameObject)Instantiate (Tiles [CheckLeftOrTop], CurrentTile.transform.GetChild (0).transform.GetChild (CheckLeftOrTop).position, Quaternion.identity);		
 				count++;
-				if (count > Step) {
+				if (count > Step)
+				{
 					CheckLeftOrTop = 1;
 					GapShifter = true;
 					count = 0;
-
 				}
 
 			} else if (CheckLeftOrTop == 1) {
 				CurrentTile = (GameObject)Instantiate (Tiles [CheckLeftOrTop], CurrentTile.transform.GetChild (0).transform.GetChild (CheckLeftOrTop).position, Quaternion.identity);		
 				count++;
-				if (count > Step) {
+				if (count > Step) 
+				{
 					CheckLeftOrTop = 0;
 					GapShifter = true;
 					count = 0;
 				}
-
 			}
 		} 
 		else
@@ -96,17 +97,21 @@ public class TileManager : MonoBehaviour
 
 		}
 
-		int GemsSlection = Random.Range(0, 10);
-		if (GemsSlection == 1 || GemsSlection == 3 ||GemsSlection == 5)
+		int GemsSlection1 = Random.Range(0, 25);
+
+
+		if (GemsSlection1 <= 3)
         {
             CurrentTile.transform.GetChild(1).gameObject.SetActive(true);
            
         }
-        else if (GemsSlection == 2 )
-        {
-            CurrentTile.transform.GetChild(2).gameObject.SetActive(true);
-        }
-
+		if (Player.Score >= 100)
+		{
+			if (GemsSlection1 == 20) 
+			{
+				CurrentTile.transform.GetChild (2).gameObject.SetActive (true);
+			}
+		}
 
 		int FireFlies = Random.Range(0, 3);
 		if (FireFlies == 1)

@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 	public static Vector3 vec3;
 	public static bool isDead;
 	public static int Score;
-	public Text UiScore;
+	public  Text UiScore;
     public Text UiCoins;
     public Text UiBestScore;
 	public Text UiGameOverScore;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour {
     public GameObject RagDoll;
     private Vector3 RayDirection;
 	public GameObject rayObject;
-
+	private float ScoreFloat =0;
   
 
 	private bool RayStart;
@@ -30,7 +30,8 @@ public class Player : MonoBehaviour {
 	{
 		isDead = false;
 	}
-    void Start () {
+    void Start ()
+	{
 		//PlayerPrefs.SetInt("Best", 0);
 		Score = 0;
 		vec3 = Vector3.zero;
@@ -39,10 +40,7 @@ public class Player : MonoBehaviour {
         checkRotation = true;
         RayDirection = Vector3.down;
 		CurrentCoins = 0;
-       	
-    
-       // uiTextCoins = GameObject.FindGameObjectWithTag("CoinsText");
-        
+
     }
 
 	public void RayCastStatus(bool enable)
@@ -50,36 +48,33 @@ public class Player : MonoBehaviour {
 		rayObject.SetActive (enable);
 	}
 
-
-
 	void Update () {
        
         UiCoins.text = coinScore.ToString();
 		UiGameOverCoins.text = CurrentCoins.ToString();
 		UiMarketCoin.text = coinScore.ToString ();
 
-		if (!isDead && GameController.GameOnOff && Input.GetMouseButtonDown(0) && GameController.RotationControll) 
+		if (!isDead && GameController.GameOnOff && Input.GetMouseButtonDown(0) && GameController.RotationControll ) 
         {
-            if (checkRotation)
-            {
-				iTween.RotateAdd (this.gameObject, new Vector3 (0, -90, 0), 0.2f);
-                checkRotation = false;
-            }
-            else
-            {
-				iTween.RotateAdd (this.gameObject, new Vector3 (0, 90, 0), 0.2f);
-                checkRotation = true;
-            }
 
-            Score++;
-            UiScore.text = Score.ToString();
-           
+
+			if (!FindObjectOfType<UI_Button_On_Tapping> ().ExclusionOfUIButtons ((Vector2)Input.mousePosition) && Time.timeScale == 1) 
+			{
+				if (checkRotation) {
+					iTween.RotateAdd (this.gameObject, new Vector3 (0, -90, 0), 0.2f);
+					checkRotation = false;
+				} else {
+					iTween.RotateAdd (this.gameObject, new Vector3 (0, 90, 0), 0.2f);
+					checkRotation = true;
+				}
+			}
         }
 		else if (isDead && !GameController.GameOnOff)
         {
-			this.gameObject.SetActive(false);
-			GameObject ragdoll=	Instantiate(RagDoll, this.gameObject.transform.GetChild(0).position, this.transform.rotation) as GameObject;
+			this.gameObject.SetActive (false);
+			GameObject ragdoll =	Instantiate (RagDoll, this.gameObject.transform.GetChild (0).position, this.transform.rotation) as GameObject;
 			ragdoll.transform.GetComponentInChildren<Rigidbody> ().AddForce (transform.forward * 100f, ForceMode.Impulse);
+
 			vec3 = Vector3.zero;
             UiGameOverScore.text = UiScore.text;
             int BestScore = PlayerPrefs.GetInt("Best");
@@ -98,6 +93,10 @@ public class Player : MonoBehaviour {
        
 	}
     
+
+
+
+
     void OnTriggerEnter (Collider Coin)
     { 
         if (Coin.gameObject.CompareTag("Coin"))
@@ -122,8 +121,8 @@ public class Player : MonoBehaviour {
         {
             Debug.Log("Diamond Trigger");
             coinScore = PlayerPrefs.GetInt("CoinInt");
-            coinScore = coinScore + 3;
-			CurrentCoins = CurrentCoins + 3;
+            coinScore = coinScore + 5;
+			CurrentCoins = CurrentCoins + 5;
 			UiGameOverCoins.text = CurrentCoins.ToString ();
             UiCoins.text = coinScore.ToString();
             Destroy(Coin.gameObject);
