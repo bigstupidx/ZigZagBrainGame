@@ -11,6 +11,7 @@ public class LoadLevelScreen : MonoBehaviour {
     public Text text; 
     public void LoadLevel(int LevelIndex)
     {
+		Time.timeScale = 1;
         LoadingScreen.SetActive(true);
         StartCoroutine(LoadingAsynchronously(LevelIndex));
     }
