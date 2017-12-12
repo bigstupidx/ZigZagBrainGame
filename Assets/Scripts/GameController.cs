@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 
 	public GameObject Canvas;
+	public Image[] LogoImages;
 	public GameObject[] DialogBox;
     public GameObject[] Players;
     public static bool GameOnOff;
@@ -322,5 +323,14 @@ public class GameController : MonoBehaviour {
 	public void ShowCanvas()
 	{
 		Canvas.SetActive (true);
+	}
+
+	public void LogoImage1()
+	{
+		LogoImages [0].gameObject.SetActive (false);
+	}
+	public void LogoImage2()
+	{
+		LogoImages [1].gameObject.SetActive (false);
 	}
 }
