@@ -34,8 +34,8 @@ namespace NiobiumStudios
 
 		void Awake ()
 		{
-			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD);
-			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD_TIME);
+//			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD);
+//			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD_TIME);
 
 			
 		}

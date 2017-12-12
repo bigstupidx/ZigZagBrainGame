@@ -79,7 +79,7 @@ public class GameController : MonoBehaviour {
 		ShowingHiding[9].SetActive(true);
 		GameOnOff = true;
 		StartCoroutine (SetActiveOffText ());
-		Invoke ("WaitForPlay" , 4f);
+
     }
 
 	void DeadSolution()
@@ -118,13 +118,13 @@ public class GameController : MonoBehaviour {
 		ShowingHiding[6].SetActive(false);
 		ShowingHiding[7].SetActive(false);
 		ShowingHiding[9].SetActive(false);
-
 		ShowingHiding[10].SetActive(true);
 	}
 
 	public void Resume_btn()
 	{
-		Time.timeScale = 1;
+		StartCoroutine (SetActiveOffText ());
+
 		FindObjectOfType<Player> ().GetComponent<Animator> ().SetBool ("Run", true);
 
 		ShowingHiding[0].SetActive(true);
@@ -264,6 +264,7 @@ public class GameController : MonoBehaviour {
     IEnumerator GameOverDelay()
     {
         yield return new WaitForSeconds(2.5f);
+
         DialogBox[1].gameObject.SetActive(false);
         DialogBox[2].gameObject.SetActive(true);
 
@@ -297,10 +298,7 @@ public class GameController : MonoBehaviour {
 		FindObjectOfType<Player> ().UiScore.text  = Player.Score.ToString ();
 	}
 
-	void TimeScale()
-	{
-		Time.timeScale = 1;
-	}
+
 
 	IEnumerator SetActiveOffText()
 	{		
@@ -309,15 +307,19 @@ public class GameController : MonoBehaviour {
 			
 			CountDown.text = i.ToString ();
 			CountDown.gameObject.SetActive (true);
-			yield return new WaitForSeconds (1);
+			//yield return new WaitForSeconds (1);
+			yield return StartCoroutine(TimeScale0CoRoutine.WaitForRealTime(1));
 			CountDown.gameObject.SetActive (false);
 		}
 		CountDown.gameObject.SetActive (true);
 		CountDown.text = "Go !!!";
-		yield return new WaitForSeconds (0.9f);
+		//yield return new WaitForSeconds (0.9f);
+		yield return StartCoroutine(TimeScale0CoRoutine.WaitForRealTime(0.9f));
 		CountDown.gameObject.SetActive (false);
 		RotationControll = true;
 		StartScroing = true;
+		WaitForPlay ();
+
 	}
 
 	public void ShowCanvas()
