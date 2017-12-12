@@ -11,9 +11,7 @@ using System.Collections.Generic;
 
 namespace NiobiumStudios
 {
-    /**
-     * The UI Logic Representation of the Daily Rewards
-     **/
+    
     public class DailyRewardsInterface : MonoBehaviour
     {
         public Canvas canvas;
@@ -34,7 +32,9 @@ namespace NiobiumStudios
         public Button buttonClaim;                  // Claim Button
         public Button buttonClose;                  // Close Button
         public Text textTimeDue;                    // Text showing how long until the next claim
-        public GridLayoutGroup dailyRewardsGroup;   // The Grid that contains the rewards
+		public Text textTimeDue_ForMainScreen;                    // Text showing how long until the next claim
+
+		public GridLayoutGroup dailyRewardsGroup;   // The Grid that contains the rewards
         public ScrollRect scrollRect;               // The Scroll Rect
         public Image imageReward;                   // The image of the reward
 
@@ -144,6 +144,7 @@ namespace NiobiumStudios
             {
                 SnapToReward();
                 textTimeDue.text = "You can claim your reward!";
+				textTimeDue_ForMainScreen.text = "You can claim your reward!";
             }
             readyToClaim = isRewardAvailableNow;
         }
@@ -189,6 +190,7 @@ namespace NiobiumStudios
                 string formattedTs = string.Format("{0:D2}:{1:D2}:{2:D2}", difference.Hours, difference.Minutes, difference.Seconds);
 
                 textTimeDue.text = string.Format("Come back in {0} for your next reward", formattedTs);
+				textTimeDue_ForMainScreen.text = string.Format("Come back in {0} for your next reward", formattedTs);
             }
 
         }
@@ -224,7 +226,7 @@ namespace NiobiumStudios
                 var showWhenNotAvailable = DailyRewards.instance.keepOpen;
                 var isRewardAvailable = DailyRewards.instance.availableReward > 0;
 
-                canvas.gameObject.SetActive(showWhenNotAvailable || (!showWhenNotAvailable && isRewardAvailable));
+               // canvas.gameObject.SetActive(showWhenNotAvailable || (!showWhenNotAvailable && isRewardAvailable));
                 UpdateUI();
 
                 SnapToReward();

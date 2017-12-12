@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
+	public GameObject Canvas;
 	public GameObject[] DialogBox;
     public GameObject[] Players;
     public static bool GameOnOff;
@@ -318,5 +319,8 @@ public class GameController : MonoBehaviour {
 		StartScroing = true;
 	}
 
-
+	public void ShowCanvas()
+	{
+		Canvas.SetActive (true);
+	}
 }

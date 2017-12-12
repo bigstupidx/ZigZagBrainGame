@@ -31,10 +31,17 @@ namespace NiobiumStudios
         private const string LAST_REWARD = "LastReward";
         private const string FMT = "O";
 
+
+		void Awake ()
+		{
+			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD);
+			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD_TIME);
+
+			
+		}
         void Start()
         {
 			
-
             StartCoroutine(InitializeTimer());
         }
 

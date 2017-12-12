@@ -8,6 +8,7 @@ using System.Globalization;
 using UnityEngine;
 using System.Collections;
 
+
 namespace NiobiumStudios
 {
     /**
@@ -73,7 +74,6 @@ namespace NiobiumStudios
                     now = DateTime.ParseExact(dateTimeStr, worldClockFMT, CultureInfo.InvariantCulture);
                     // World Clock don't count the seconds. So we pick the seconds from the local machine
                     now = now.AddSeconds(DateTime.Now.Second);
-
                     var time = string.Format("{0:D4}/{1:D2}/{2:D2} {3:D2}:{4:D2}:{5:D2}", now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 
                     print("World Clock Time: " + time);
