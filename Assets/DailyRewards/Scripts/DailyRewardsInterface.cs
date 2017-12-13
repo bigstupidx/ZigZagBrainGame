@@ -42,7 +42,9 @@ namespace NiobiumStudios
         private List<DailyRewardUI> dailyRewardsUI = new List<DailyRewardUI>();
 
 		private int CoinsOrGems;
-        void Awake()
+		public GameObject GiftIcon;
+
+		void Awake()
         {
             canvas.gameObject.SetActive(false);
         }
@@ -145,6 +147,7 @@ namespace NiobiumStudios
                 SnapToReward();
                 textTimeDue.text = "You can claim your reward!";
 				textTimeDue_ForMainScreen.text = " Claim reward!";
+				GiftIcon.gameObject.GetComponent<ITweenMagic> ().enabled = true;
             }
             readyToClaim = isRewardAvailableNow;
         }
@@ -190,7 +193,10 @@ namespace NiobiumStudios
                 string formattedTs = string.Format("{0:D2}:{1:D2}:{2:D2}", difference.Hours, difference.Minutes, difference.Seconds);
 
                 textTimeDue.text = string.Format("Come back in {0} for your next reward", formattedTs);
+				GiftIcon.gameObject.GetComponent<ITweenMagic> ().enabled = false;
+				GiftIcon.gameObject.GetComponent<iTween> ().enabled = false;
 				textTimeDue_ForMainScreen.text = string.Format("{0}", formattedTs);
+
             }
 
         }

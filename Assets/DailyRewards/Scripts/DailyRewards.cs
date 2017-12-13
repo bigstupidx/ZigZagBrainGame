@@ -41,7 +41,8 @@ namespace NiobiumStudios
 		}
         void Start()
         {
-			
+			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD);
+			PlayerPrefs.DeleteKey(DailyRewards.LAST_REWARD_TIME);
             StartCoroutine(InitializeTimer());
         }
 

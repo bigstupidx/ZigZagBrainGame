@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour {
     public GameObject[] Players;
     public static bool GameOnOff;
     private  int PlayerSlector;
-   // private int PlayerNumber;
     public GameObject BuyButton;
     public GameObject Lock;
     public Text PriceText;
@@ -24,12 +23,16 @@ public class GameController : MonoBehaviour {
 	public static bool RayStart;
 	public static bool RotationControll;
 	public static bool StartScroing = false;
+	public AudioSource Music;
+	public Slider Volume;
+
 
     void Start ()
     {
+
 		RotationControll = false;
 		shop = false;
-        //PlayerPrefs.SetInt("0", 1);
+
 		Player.isDead = false;
         DialogBox [0].gameObject.SetActive (true);
 		GameOnOff = false;
@@ -38,9 +41,13 @@ public class GameController : MonoBehaviour {
         ShowBuyButton();
 		FindObjectOfType<Player> ().RayCastStatus (false);
 		PlayerPrefs.SetInt("0", 1);
+		ShowingHiding [13].SetActive (false);
 
-
-
+		Volume.gameObject.GetComponent<Slider> ().enabled = true;
+		Volume.gameObject.GetComponent<Slider> ().value = PlayerPrefs.GetFloat ("MusicVolume");
+		Music = GameObject.Find ("AudioSource").GetComponent<AudioSource>();
+		Music.enabled = true;
+		Music.volume = PlayerPrefs.GetFloat ("MusicVolume");
     }
 
     void Update ()
@@ -56,6 +63,8 @@ public class GameController : MonoBehaviour {
             StartCoroutine(GameOverDelay());			
 		}
 
+
+		Music.volume = Volume.value;
 
 	}
 
@@ -76,7 +85,7 @@ public class GameController : MonoBehaviour {
 		ShowingHiding[1].SetActive(true);
 		ShowingHiding[6].SetActive(true);
 		ShowingHiding[7].SetActive(true);
-		ShowingHiding[9].SetActive(true);
+		//ShowingHiding[9].SetActive(true);
 		GameOnOff = true;
 		StartCoroutine (SetActiveOffText ());
 
@@ -131,8 +140,6 @@ public class GameController : MonoBehaviour {
 		ShowingHiding[1].SetActive(true);
 		ShowingHiding[6].SetActive(true);
 		ShowingHiding[7].SetActive(true);
-		ShowingHiding[9].SetActive(true);
-
 		ShowingHiding[10].SetActive(false);
 
 	}
@@ -288,6 +295,7 @@ public class GameController : MonoBehaviour {
 		FindObjectOfType<Player> ().RayCastStatus (true);
 		InvokeRepeating ("ScoreUpdater", 1f,0.5f);
 		Time.timeScale = 1;
+
 		//StartScroing = true;
 	}
 
@@ -319,6 +327,7 @@ public class GameController : MonoBehaviour {
 		RotationControll = true;
 		StartScroing = true;
 		WaitForPlay ();
+		ShowingHiding[9].SetActive(true);
 
 	}
 
@@ -334,5 +343,12 @@ public class GameController : MonoBehaviour {
 	public void LogoImage2()
 	{
 		LogoImages [1].gameObject.SetActive (false);
+	}
+
+	public void SaveMusicSetting()
+	{
+		PlayerPrefs.SetFloat ("MusicVolume", Volume.value);
+		PlayerPrefs.Save ();
+		Debug.Log (Volume.value);
 	}
 }
