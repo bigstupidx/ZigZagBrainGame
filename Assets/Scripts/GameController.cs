@@ -351,4 +351,10 @@ public class GameController : MonoBehaviour {
 		PlayerPrefs.Save ();
 		Debug.Log (Volume.value);
 	}
+
+	public void RateUS()
+	{
+		Application.OpenURL ("https://www.facebook.com/braingamesstd/");
+
+	}
 }
