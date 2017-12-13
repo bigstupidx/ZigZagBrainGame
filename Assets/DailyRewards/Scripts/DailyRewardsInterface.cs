@@ -200,7 +200,7 @@ namespace NiobiumStudios
             }
 
         }
-
+	
         // Delegate
         private void OnClaimPrize(int day)
         {
