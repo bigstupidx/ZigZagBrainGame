@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
     public GameObject BuyButton;
     public GameObject Lock;
     public Text PriceText;
+	public GameObject EnoughPrice;
     public int[] PlayerPrice;
     public int Sold;
     public static bool shop;
@@ -23,16 +24,15 @@ public class GameController : MonoBehaviour {
 	public static bool RayStart;
 	public static bool RotationControll;
 	public static bool StartScroing = false;
-	public AudioSource Music;
-	public Slider Volume;
-
+	public SoundController SC;
+	public Slider Music;
+	public Slider Sound;
 
     void Start ()
     {
-
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 		RotationControll = false;
 		shop = false;
-
 		Player.isDead = false;
         DialogBox [0].gameObject.SetActive (true);
 		GameOnOff = false;
@@ -43,16 +43,44 @@ public class GameController : MonoBehaviour {
 		PlayerPrefs.SetInt("0", 1);
 		ShowingHiding [13].SetActive (false);
 
-		Volume.gameObject.GetComponent<Slider> ().enabled = true;
-		Volume.gameObject.GetComponent<Slider> ().value = PlayerPrefs.GetFloat ("MusicVolume");
-		Music = GameObject.Find ("AudioSource").GetComponent<AudioSource>();
-		Music.enabled = true;
-		Music.volume = PlayerPrefs.GetFloat ("MusicVolume");
+		Music.GetComponent<Slider> ().enabled = true;
+		Sound.GetComponent<Slider> ().enabled = true;
+		if (PlayerPrefs.GetInt ("FirstStart") == 0) 
+		{
+			SC.music.volume = 1f;
+			SC.sound.volume = 1f;
+			PlayerPrefs.SetInt ("FirstStart", 1);
+		} 
+		else
+		{
+			Music.value = PlayerPrefs.GetFloat ("Music");
+			SC.music.volume = Music.value;
+			Sound.value = PlayerPrefs.GetFloat ("Sound");
+			SC.sound.volume = Sound.value;
+
+
+		}
+	
+		SC=FindObjectOfType<SoundController>();
+
+		if (PlayerPrefs.GetInt ("Restart") == 1) 
+		{
+			OnPlay ();
+			PlayerPrefs.SetInt ("Restart", 0);
+		}
     }
+
+
+	public void UpdateSlider()
+	{
+
+		SC.music.volume = Music.value;
+		SC.sound.volume = Sound.value;
+
+	}
 
     void Update ()
     {
-       
 		if (GameOnOff && !Player.isDead) 
 		{
 			DialogBox [0].gameObject.SetActive (false);
@@ -63,24 +91,27 @@ public class GameController : MonoBehaviour {
             StartCoroutine(GameOverDelay());			
 		}
 
+		UpdateSlider ();
 
-		Music.volume = Volume.value;
 
 	}
 
 	public void Exit()
 	{
+		SC.playSound ("Button");
 		Application.Quit ();
 	}
 
 	public void OnRetry()
 	{
+
+
 	//	Application.LoadLevel(0);
 	}
 
     public void OnPlay()
     {
-
+		SC.playSound ("Button");
 		ShowingHiding[0].SetActive(true);
 		ShowingHiding[1].SetActive(true);
 		ShowingHiding[6].SetActive(true);
@@ -97,6 +128,7 @@ public class GameController : MonoBehaviour {
 	}
     public void OnPlaySlection()
     {
+		SC.playSound ("Button");
         DialogBox[0].gameObject.SetActive(false);
 		ShowingHiding[5].SetActive(false);
         DialogBox[3].gameObject.SetActive(true);
@@ -114,12 +146,23 @@ public class GameController : MonoBehaviour {
  
 	public void Setting_btn()
 	{
-		DialogBox [0].SetActive (false);
+		SC.playSound ("Button");
 		DialogBox [4].SetActive (true);
+	}
+
+	public void SaveMusicSetting()
+	{
+		SC.playSound ("Button");
+		SC.SetMusicVolume (Music.value);
+		SC.SetSoundVolume (Sound.value);
+		PlayerPrefs.Save ();
+		DialogBox [4].SetActive (false);
+
 	}
 
 	public void Pause_btn()
 	{
+		SC.playSound ("Button");
 		FindObjectOfType<Player> ().GetComponent<Animator> ().SetBool ("Run", false);
 		Time.timeScale = 0;
 		ShowingHiding[0].SetActive(false);
@@ -132,6 +175,7 @@ public class GameController : MonoBehaviour {
 
 	public void Resume_btn()
 	{
+		SC.playSound ("Button");
 		StartCoroutine (SetActiveOffText ());
 
 		FindObjectOfType<Player> ().GetComponent<Animator> ().SetBool ("Run", true);
@@ -143,13 +187,20 @@ public class GameController : MonoBehaviour {
 		ShowingHiding[10].SetActive(false);
 
 	}
+
+	public void OnRestart()
+	{
+		PlayerPrefs.SetInt ("Restart" , 1);
+	}
+
+
 	/// ////////////////////////////////////////////Player Slection Screen
   
 
 
     public void PlayerSlection_Nextbtn()
     {
-		
+		SC.playSound ("Button");
 		if (PlayerSlector < 6) 
 		{
 			ShowingHiding [11].SetActive (true);
@@ -173,7 +224,7 @@ public class GameController : MonoBehaviour {
     public void PlayerSlection_Backbtn()
     {
 		
-       
+		SC.playSound ("Button");
 		if( PlayerSlector > 1)
         {
 			ShowingHiding [12].SetActive (true);
@@ -198,6 +249,7 @@ public class GameController : MonoBehaviour {
 
     public void PlayerSlection_Usebtn()
     {
+		SC.playSound ("Button");
         PlayerPrefs.SetInt("Player", PlayerSlector);
 		Application.LoadLevel (0);
 		//ShowBuyButton ();
@@ -205,31 +257,43 @@ public class GameController : MonoBehaviour {
 
     public void PlayerSlection_BacktoMainMenubtn()
     {
+		SC.playSound ("Button");
         DialogBox[3].gameObject.SetActive(false);
         DialogBox[0].gameObject.SetActive(true);
 		ShowingHiding[5].SetActive(true);
         isKinematic = false;
-        Application.LoadLevel(0);
         shop = false;
         ShowingHiding[2].SetActive(true);
         ShowingHiding[3].SetActive(false);
         ShowingHiding[4].SetActive(false);
+		LogoImages [1].gameObject.SetActive (true);
+		LogoImages [0].gameObject.SetActive (true);
     }
 
     public void OnBuyButton()
     {
-        if (Player.coinScore >= PlayerPrice[PlayerSlector-1])
-        {
-            BuyButton.gameObject.SetActive(false);
-            PlayerPrefs.SetInt((PlayerSlector).ToString(), 1);
-            Sold = PlayerPrefs.GetInt((PlayerSlector - 1).ToString());
-            PlayerPrefs.SetInt("CoinInt", (Player.coinScore - PlayerPrice[PlayerSlector - 1]));
-            Player.coinScore = PlayerPrefs.GetInt("CoinInt");
+		SC.playSound ("Button");
+		if (Player.coinScore >= PlayerPrice [PlayerSlector - 1]) {
+			BuyButton.gameObject.SetActive (false);
+			PlayerPrefs.SetInt ((PlayerSlector).ToString (), 1);
+			Sold = PlayerPrefs.GetInt ((PlayerSlector - 1).ToString ());
+			PlayerPrefs.SetInt ("CoinInt", (Player.coinScore - PlayerPrice [PlayerSlector - 1]));
+			Player.coinScore = PlayerPrefs.GetInt ("CoinInt");
             
-        }
+		} else 
+		{
+			StartCoroutine (EnoughPriceTimer ());
+		}
         ShowBuyButton();
 
     }
+
+	IEnumerator EnoughPriceTimer()
+	{
+		EnoughPrice.gameObject.SetActive (true);
+		yield return new WaitForSeconds (1f);
+		EnoughPrice.gameObject.SetActive (false);
+	}
 
 
     private void ShowBuyButton()
@@ -251,7 +315,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (PlayerSlector == PlayerPrefs.GetInt ("Player")) {
-			Debug.Log ("This is your Player");
+			
 			ShowingHiding [4].SetActive (true);
 		} else
 			ShowingHiding [4].SetActive (false);
@@ -277,15 +341,6 @@ public class GameController : MonoBehaviour {
 
     }
 
-    public void Reset()
-    {
-        PlayerPrefs.SetInt("0", 1);
-        PlayerPrefs.SetInt("1", 0);
-        PlayerPrefs.SetInt("2", 0);
-        PlayerPrefs.SetInt("3", 0);
-
-    }
-
 	void WaitForPlay()
 	{
 		
@@ -299,8 +354,8 @@ public class GameController : MonoBehaviour {
 		//StartScroing = true;
 	}
 
-	void ScoreUpdater ()
-	{
+	void ScoreUpdater () 
+	{ 
 		Player.Score++;
 		if (!Player.isDead)
 		FindObjectOfType<Player> ().UiScore.text  = Player.Score.ToString ();
@@ -345,16 +400,11 @@ public class GameController : MonoBehaviour {
 		LogoImages [1].gameObject.SetActive (false);
 	}
 
-	public void SaveMusicSetting()
-	{
-		PlayerPrefs.SetFloat ("MusicVolume", Volume.value);
-		PlayerPrefs.Save ();
-		Debug.Log (Volume.value);
-	}
+
 
 	public void RateUS()
 	{
+		SC.playSound ("Button");
 		Application.OpenURL ("https://www.facebook.com/braingamesstd/");
-
 	}
 }

@@ -22,8 +22,8 @@ public class Player : MonoBehaviour {
     private Vector3 RayDirection;
 	public GameObject rayObject;
 	private float ScoreFloat =0;
-  
-
+	private AudioSource CoinSound;
+	public SoundController SC;
 	private bool RayStart;
    
 	void Awake()
@@ -40,6 +40,8 @@ public class Player : MonoBehaviour {
         checkRotation = true;
         RayDirection = Vector3.down;
 		CurrentCoins = 0;
+
+
 
     }
 
@@ -74,7 +76,7 @@ public class Player : MonoBehaviour {
 			this.gameObject.SetActive (false);
 			GameObject ragdoll =	Instantiate (RagDoll, this.gameObject.transform.GetChild (0).position, this.transform.rotation) as GameObject;
 			ragdoll.transform.GetComponentInChildren<Rigidbody> ().AddForce (transform.forward * 100f, ForceMode.Impulse);
-
+			SC.playSound ("Death");
 			vec3 = Vector3.zero;
             UiGameOverScore.text = UiScore.text;
             int BestScore = PlayerPrefs.GetInt("Best");
@@ -99,9 +101,11 @@ public class Player : MonoBehaviour {
 
     void OnTriggerEnter (Collider Coin)
     { 
+
+
         if (Coin.gameObject.CompareTag("Coin"))
         {
-
+			SC.playSound ("Coin");
             coinScore = PlayerPrefs.GetInt("CoinInt");
             coinScore = coinScore + 1;
 			CurrentCoins = CurrentCoins + 1;
@@ -119,7 +123,8 @@ public class Player : MonoBehaviour {
 
         if (Coin.gameObject.CompareTag("Diamond"))
         {
-            Debug.Log("Diamond Trigger");
+			SC.playSound ("Coin");
+
             coinScore = PlayerPrefs.GetInt("CoinInt");
             coinScore = coinScore + 5;
 			CurrentCoins = CurrentCoins + 5;

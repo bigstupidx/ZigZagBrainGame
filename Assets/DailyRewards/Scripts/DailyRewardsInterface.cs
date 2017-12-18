@@ -193,8 +193,8 @@ namespace NiobiumStudios
                 string formattedTs = string.Format("{0:D2}:{1:D2}:{2:D2}", difference.Hours, difference.Minutes, difference.Seconds);
 
                 textTimeDue.text = string.Format("Come back in {0} for your next reward", formattedTs);
-				GiftIcon.gameObject.GetComponent<ITweenMagic> ().enabled = false;
-				GiftIcon.gameObject.GetComponent<iTween> ().enabled = false;
+				//GiftIcon.gameObject.GetComponent<ITweenMagic> ().enabled = false;
+
 				textTimeDue_ForMainScreen.text = string.Format("{0}", formattedTs);
 
             }

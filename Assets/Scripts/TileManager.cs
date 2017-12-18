@@ -105,7 +105,7 @@ public class TileManager : MonoBehaviour
             CurrentTile.transform.GetChild(1).gameObject.SetActive(true);
            
         }
-		if (Player.Score >= 100)
+		if (Player.Score >= 50)
 		{
 			if (GemsSlection1 == 20) 
 			{
