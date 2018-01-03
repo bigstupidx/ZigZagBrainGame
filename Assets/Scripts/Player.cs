@@ -73,8 +73,9 @@ public class Player : MonoBehaviour {
         }
 		else if (isDead && !GameController.GameOnOff)
         {
+			
 			this.gameObject.SetActive (false);
-			GameObject ragdoll =	Instantiate (RagDoll, this.gameObject.transform.GetChild (0).position, this.transform.rotation) as GameObject;
+			GameObject ragdoll = Instantiate (RagDoll, this.gameObject.transform.GetChild (0).position, this.transform.rotation) as GameObject;
 			ragdoll.transform.GetComponentInChildren<Rigidbody> ().AddForce (transform.forward * 100f, ForceMode.Impulse);
 			SC.playSound ("Death");
 			vec3 = Vector3.zero;
